@@ -4,6 +4,7 @@ from aiogram import types
 from loader import dp, db
 
 from utils.using_api import send_approval_system_answer
+from data.config import PROGRAMM_USERNAME, PROGRAMM_PASSWORD
 
 
 @dp.callback_query_handler(lambda c: "approval" in c.data)
@@ -15,12 +16,20 @@ async def adding_departmant(call: types.CallbackQuery):
         if not programm_user:
             return False
 
+        # response = await send_approval_system_answer(
+        #     data=data,
+        #     username=programm_user.get("username").encode("utf-8"),
+        #     password=programm_user.get("password").encode("utf-8"),
+        #     status="true"
+        # )
+
         response = await send_approval_system_answer(
             data=data,
-            username=programm_user.get("username").encode("utf-8"),
-            password=programm_user.get("password").encode("utf-8"),
+            username=PROGRAMM_USERNAME,
+            password=PROGRAMM_PASSWORD,
             status="true"
         )
+
         if not response:
             await call.message.answer("Tizimda xatolik mavjud!, iltimos keyinroq urinib ko'ring!")
             return
@@ -36,12 +45,20 @@ async def adding_departmant(call: types.CallbackQuery):
         if not programm_user:
             return False
 
+        # response = await send_approval_system_answer(
+        #     data=data,
+        #     username=programm_user.get("username").encode("utf-8"),
+        #     password=programm_user.get("password").encode("utf-8"),
+        #     status="false"
+        # )
+
         response = await send_approval_system_answer(
             data=data,
-            username=programm_user.get("username").encode("utf-8"),
-            password=programm_user.get("password").encode("utf-8"),
-            status="false"
+            username=PROGRAMM_USERNAME,
+            password=PROGRAMM_PASSWORD,
+            status="true"
         )
+
         if not response:
             await call.message.answer("Tizimda xatolik mavjud!, iltimos keyinroq urinib ko'ring!")
             return

@@ -32,7 +32,7 @@ async def send_approval_system_answer(data: dict, username: str, password: str, 
     auth = HTTPBasicAuth(username=username,
                          password=password)
     response = requests.get(url, params=params, auth=auth)
-
+    print(params)
     if response.status_code == 200:
         return response.text
     else:

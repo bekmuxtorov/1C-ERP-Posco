@@ -22,13 +22,13 @@ async def bot_start(message: types.Message):
     if user:
         await message.answer("Asosiy menu", reply_markup=menu_button)
     else:
-        user_programm = await check_status(message.from_user.id)
-        if user_programm:
-            await message.answer("1C dasturdagi loginingizni quyida kiriting:")
-            await Registration.username.set()
-        else:
-            await message.answer("Botdan foydalanish uchun telefon raqamingizni quyidagi tugma yordamida jo'nating yoki namuna ko'rinishida yuboring.\n\nNamuna: +998901644101", reply_markup=phone_button)
-            await Registration.phone_number.set()
+        # user_programm = await check_status(message.from_user.id)
+        # if user_programm:
+        #     await message.answer("1C dasturdagi loginingizni quyida kiriting:")
+        #     await Registration.username.set()
+        # else:
+        await message.answer("Botdan foydalanish uchun telefon raqamingizni quyidagi tugma yordamida jo'nating yoki namuna ko'rinishida yuboring.\n\nNamuna: +998901644101", reply_markup=phone_button)
+        await Registration.phone_number.set()
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT, state=Registration.username)
@@ -98,7 +98,6 @@ async def create_user(message, contact: str, state: FSMContext):
     if status:
         await message.answer("✅ Muaffaqiyatli ro'yhatdan o'tdingiz!", reply_markup=menu_button)
         await state.finish()
-        service_message = await message.answer(text=".", reply_markup=menu_button)
-        await service_message.delete()
+
     else:
         await message.answer("❌ Nimadir xato\n\nQayta /start ni yuborib urinib ko'ring!")
