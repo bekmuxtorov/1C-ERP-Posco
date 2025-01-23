@@ -3,13 +3,13 @@ from PIL import Image
 import fitz
 import requests
 from requests.auth import HTTPBasicAuth
-from data.config import IP, PROGRAMM_USERNAME, PROGRAMM_PASSWORD
+from data.config import IP, PROGRAMM_USERNAME, PROGRAMM_PASSWORD, URL
 
 import base64
 
 
 async def check_status(chat_id):
-    url = f"http://{IP}/Posco/hs/document_approval/telegram_user"
+    url = f"http://{IP}/{URL}/hs/document_approval/telegram_user"
     params = {
         "chat_id": chat_id,
     }
@@ -23,7 +23,7 @@ async def check_status(chat_id):
 
 
 async def send_approval_system_answer(data: dict, username: str, password: str, status: str):
-    url = f"http://{IP}/Posco/hs/document_approval"
+    url = f"http://{IP}/{URL}/hs/document_approval"
     params = {
         "UID_BP": data.get("bp_id"),
         "app": status,
@@ -32,7 +32,6 @@ async def send_approval_system_answer(data: dict, username: str, password: str, 
     auth = HTTPBasicAuth(username=username,
                          password=password)
     response = requests.get(url, params=params, auth=auth)
-    print(params)
     if response.status_code == 200:
         return response.text
     else:
@@ -40,7 +39,9 @@ async def send_approval_system_answer(data: dict, username: str, password: str, 
 
 
 async def get_salary_report(phone_number: str, year: str, month: str) -> dict:
-    url = f"http://{IP}/Posco/hs/payslip"
+    url = f"http://{IP}/{URL}/hs/payslip"
+    if not phone_number.startswith("+"):
+        phone_number = "+" + phone_number
     params = {
         "phone_number": phone_number,
         "year": year,
@@ -48,6 +49,8 @@ async def get_salary_report(phone_number: str, year: str, month: str) -> dict:
     }
     auth = HTTPBasicAuth(username=PROGRAMM_USERNAME,
                          password=PROGRAMM_PASSWORD)
+
+    print(url)
     response = requests.get(url, params=params, auth=auth)
 
     if response.status_code == 200:
