@@ -60,7 +60,7 @@ async def adding_departmant(call: types.CallbackQuery,  state: FSMContext):
     response_json = await get_salary_report(phone_number, year, month)
     if not bool(response_json):
         await loadbar_message.delete()
-        await call.message.answer("Nimadir xato, birozdan keyin qayta urinib ko'ring!", reply_markup=get_salary_button)
+        await call.message.answer("Nimadir xato, birozdan keyin qayta urinib ko'ring![001]", reply_markup=get_salary_button)
         await state.finish()
         return
 
@@ -78,7 +78,7 @@ async def adding_departmant(call: types.CallbackQuery,  state: FSMContext):
         file_path = f"reports/{phone_number}.pdf"  # Faylning to'liq manzili
         convert_image_status = await convert_to_png(file_path, phone_number)
         if not convert_image_status:
-            await call.message.answer("Nimadir xato, birozdan keyin qayta urinib ko'ring!", reply_markup=get_salary_button)
+            await call.message.answer("Nimadir xato, birozdan keyin qayta urinib ko'ring![002]", reply_markup=get_salary_button)
             await state.finish()
             await delete_file(file_path)
             return
@@ -92,7 +92,7 @@ async def adding_departmant(call: types.CallbackQuery,  state: FSMContext):
         await delete_file(file_path)
 
     else:
-        await call.message.answer("Nimadir xato, birozdan keyin qayta urinib ko'ring!", reply_markup=get_salary_button)
+        await call.message.answer("Nimadir xato, birozdan keyin qayta urinib ko'ring![003]", reply_markup=get_salary_button)
     await state.finish()
 
 
