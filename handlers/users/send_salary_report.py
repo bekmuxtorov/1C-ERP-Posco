@@ -104,6 +104,18 @@ async def adding_departmant(call: types.CallbackQuery,  state: FSMContext):
         await state.finish()
         return
 
+    if response_json.get("status_code") == 700:
+        await loadbar_message.delete()
+
+        languge_code = await db.select_language_code(chat_id=call.from_user.id)
+        if languge_code == "uz":
+            await call.message.answer(f"💡{month}/{year}\n\nBu davr uchun ish haqi hisoboti shakllantirilmagan!", reply_markup=get_salary_button(languge_code))
+        else:
+            await call.message.answer(f"💡{month}/{year}\n\nОтчет по заработной плате за этот период не формировался!", reply_markup=get_salary_button(languge_code))
+
+        await state.finish()
+        return
+
     await loadbar_message.delete()
     loadbar_message = await call.message.answer("..")
     status = await get_file(response_json, phone_number)
