@@ -14,5 +14,12 @@ phone_button = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     KeyboardButton("☎️ Telefon raqamni ulashish", request_contact=True)
 )
 
-words = ["💡Oylik hisobotni olish","🛠️Sozlamalar", "🔙Bekor qilish"]
+phone_button_ru = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(
+    KeyboardButton("☎️ Поделиться номером телефона", request_contact=True)
+)
+
+words = ["💡Oylik hisobotni olish", "🛠️Sozlamalar", "🔙Bekor qilish"]
 menu_button = make_buttons(words=words, row_width=2)
+
+words_ru = ["💡Получите ежемесячный отчет", "🛠️Настройки", "🔙Отмена"]
+menu_button_ru = make_buttons(words=words_ru, row_width=2)

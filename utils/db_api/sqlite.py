@@ -30,9 +30,10 @@ class Database:
     def create_table_users(self):
         sql = """
             CREATE TABLE IF NOT EXISTS Users (
-            username VARCHAR(255) NULL, 
+            username VARCHAR(255) NULL,
             password VARCHAR(255) NULL,
             phone_number VARCHAR(255) NOT NULL,
+            language_code VARCHAR(10) NULL,
             chat_id VARCHAR(255) NOT NULL,
             PRIMARY KEY (chat_id)
         );
@@ -46,25 +47,26 @@ class Database:
         ])
         return sql, tuple(parameters.values())
 
-    def add_user(self, username: str, password: str, phone_number: str, chat_id: str):
+    def add_user(self, username: str, password: str, language_code, phone_number: str, chat_id: str):
         try:
             sql = """
-            INSERT INTO Users(username, password, phone_number, chat_id) VALUES(?, ?, ?, ?)
+            INSERT INTO Users(username, password, language_code, phone_number, chat_id) VALUES(?, ?, ?, ?, ?)
             """
             self.execute(sql, parameters=(username, password,
-                         phone_number, chat_id), commit=True)
+                         language_code, phone_number, chat_id), commit=True)
             status = True
         except:
             status = False
         return status
 
-    def add_employee(self, phone_number: str, chat_id: str):
+    def add_employee(self, phone_number: str, language_code: str, chat_id: str):
         try:
             sql = """
-            INSERT INTO Users(phone_number, chat_id) VALUES(?, ?)
-            """
+                INSERT INTO Users(phone_number, language_code, chat_id) VALUES(?, ?, ?)
+                """
             print()
-            self.execute(sql, parameters=(phone_number, chat_id), commit=True)
+            self.execute(sql, parameters=(
+                phone_number, language_code, chat_id), commit=True)
             status = True
         except:
             status = False
@@ -84,7 +86,16 @@ class Database:
             "username": response[0],
             "password": response[1],
             "phone_number": response[2],
-            "chat_id": response[3]
+            "language_code": response[3],
+            "chat_id": response[4]
+        } if response else None
+
+    async def select_language_code(self, **kwargs):
+        sql = "SELECT * FROM Users WHERE "
+        sql, parameters = self.format_args(sql, kwargs)
+        response = self.execute(sql, parameters=parameters, fetchone=True)
+        return {
+            "language_code": response[3],
         } if response else None
 
     def count_users(self):
